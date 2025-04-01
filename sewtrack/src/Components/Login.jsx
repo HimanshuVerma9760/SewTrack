@@ -14,8 +14,10 @@ import { useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
 import { debounce } from "lodash";
 import { Form, useNavigate } from "react-router";
+import { redirect } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { indigo } from "@mui/material/colors";
+import useAuth from "../util/useAuth";
 const Conn = import.meta.env.VITE_CONN_URI;
 
 export default function Login() {
@@ -37,7 +39,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const redirect = debounce(() => {
-    navigate("/customers/add-customer");
+    navigate("/dashboard");
   }, 2000);
 
   function onBlurHandler(event) {
@@ -88,26 +90,28 @@ export default function Login() {
       phone,
       password,
     };
-    const response = await fetch(`${Conn}/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-    if (!response) {
-      toast.error("Server error");
-      return;
+    try {
+      const response = await fetch(`${Conn}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      setIsLoading(false);
+      if (!response.ok) {
+        toast.error("Invalid phone number or password");
+        return;
+      }
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      toast.loading("Login successful", { duration: 1900 });
+      redirect();
+    } catch (error) {
+      setIsLoading(false);
+      console.log("server eror: ", error);
+      toast.error("Server is not responding, check your connection!");
     }
-    setIsLoading(false);
-    if (!response.ok) {
-      toast.error("Invalid phone number or password");
-      return;
-    }
-    const data = await response.json();
-    localStorage.setItem("token", data.token);
-    toast.loading("Login successful", { duration: 1900 });
-    redirect();
   }
 
   function onChangeHandler(event) {
@@ -225,11 +229,23 @@ export default function Login() {
               sx={{ marginTop: "1rem", backgroundColor: indigo[300] }}
               disabled={error.phoneError.state || error.passwordError.state}
             >
-              {isLoading ? <CircularProgress size={23} sx={{color:"white"}}/> : "Submit"}
+              {isLoading ? (
+                <CircularProgress size={23} sx={{ color: "white" }} />
+              ) : (
+                "Submit"
+              )}
             </Button>
           </Grid2>
         </Form>
       </Grid2>
     </motion.div>
   );
+}
+
+export async function loginLoader() {
+  const verifiedAuth = await useAuth();
+  if (verifiedAuth.response) {
+    return redirect("/dashboard");
+  }
+  return null;
 }

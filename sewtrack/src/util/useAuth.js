@@ -10,7 +10,13 @@ export default async function useAuth() {
     return {
       response: true,
       adminId: result.adminId,
-      fullName: result.fullName,
+      name: result.fullName,
+    };
+  } else {
+    return {
+      response: false,
+      adminId: null,
+      name: null,
     };
   }
 }

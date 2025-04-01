@@ -29,6 +29,7 @@ import {
   Dashboard,
   FormatAlignCenter,
   GroupAdd,
+  ListAlt,
   ListAltOutlined,
   ListAltRounded,
   LocalHospital,
@@ -168,13 +169,39 @@ export default function Navigation() {
             transition={{ duration: 0.5, delay: 0.5 }}
           >
             <Link
-              to="customers/add-customer"
+              to="dashboard"
               style={{ textDecoration: "none", color: "black" }}
             >
               <ListItemButton
                 style={{ display: "flex", gap: "2rem" }}
                 sx={
-                  nav.pathname.split("/")[2] === "customers" && {
+                  nav.pathname.split("/")[1] === "dashboard" && {
+                    backgroundColor: "whitesmoke",
+                  }
+                }
+              >
+                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                  <Dashboard />
+                </Typography>
+                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                  Dashboard
+                </Typography>
+              </ListItemButton>
+            </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <Link
+              to="customers"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <ListItemButton
+                style={{ display: "flex", gap: "2rem" }}
+                sx={
+                  nav.pathname.split("/")[1] === "customers" && {
                     backgroundColor: "whitesmoke",
                   }
                 }
@@ -192,6 +219,32 @@ export default function Navigation() {
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <Link
+              to="/appointments"
+              style={{ textDecoration: "none", color: "black" }}
+            >
+              <ListItemButton
+                style={{ display: "flex", gap: "2rem" }}
+                sx={
+                  nav.pathname.split("/")[1] === "appointments" && {
+                    backgroundColor: "whitesmoke",
+                  }
+                }
+              >
+                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                  <ListAlt />
+                </Typography>
+                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                  Appointments
+                </Typography>
+              </ListItemButton>
+            </Link>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
           >
             <ListItemButton
               sx={{ display: "flex", gap: "2rem" }}

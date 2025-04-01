@@ -1,9 +1,9 @@
 import { Typography } from "@mui/material";
 
-export default function AddCustomer() {
+export default function EditAppointment() {
   return (
     <Typography variant="h2" align="center">
-      Add Customer
+      Edit Appointment
     </Typography>
   );
 }

@@ -1,14 +1,22 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Login from "./Components/Login";
+import Login, { loginLoader } from "./Components/Login";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, Skeleton, ThemeProvider } from "@mui/material";
 import { grey } from "@mui/material/colors";
-import AddCustomer from "./Components/AddCustomer";
+// import AddCustomer from "./Components/AddCustomer";
 import Navigation from "./Components/Navigation";
 import RouteAuthGuardLoader from "./util/loaders/RouteAuthGuardLoader";
+import Dashboard from "./Components/Dashboard";
+import Customers from "./Components/Customers/Customers";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./util/API/http";
+import AddCustomer from "./Components/Customers/AddCustomer";
+import Appointments from "./Components/Appointments/Appointments";
+import AddAppointment from "./Components/Appointments/AddAppointments";
+import AddAppointmentAction from "./util/actions/AddAppointmentAction";
 
 export default function App() {
   const theme = createTheme({
@@ -22,6 +30,10 @@ export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      loader: loginLoader,
+      hydrateFallbackElement: (
+        <Skeleton width={500} height={500} sx={{ margin: "auto" }} />
+      ),
       element: <Login />,
     },
     {
@@ -30,8 +42,25 @@ export default function App() {
       element: <Navigation />,
       children: [
         {
+          path: "/dashboard",
+          element: <Dashboard />,
+        },
+        {
+          path: "/customers",
+          element: <Customers />,
+        },
+        {
           path: "/customers/add-customer",
           element: <AddCustomer />,
+        },
+        {
+          path: "/appointments",
+          element: <Appointments />,
+        },
+        {
+          path: "/appointments/add-appointments",
+          action: AddAppointmentAction,
+          element: <AddAppointment />,
         },
       ],
     },
@@ -40,7 +69,9 @@ export default function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </ThemeProvider>
     </>
   );
