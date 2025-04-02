@@ -218,7 +218,7 @@ export default function Navigation() {
           <motion.div
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
           >
             <Link
               to="/appointments"
@@ -244,7 +244,7 @@ export default function Navigation() {
           <motion.div
             initial={{ opacity: 0, x: -100 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
           >
             <ListItemButton
               sx={{ display: "flex", gap: "2rem" }}

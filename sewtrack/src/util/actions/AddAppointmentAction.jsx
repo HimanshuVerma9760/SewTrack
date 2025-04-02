@@ -1,3 +1,5 @@
+import { queryClient } from "../API/http";
+
 const Conn = import.meta.env.VITE_CONN_URI;
 export default async function AddAppointmentAction({ request }) {
   const formData = await request.formData();
@@ -7,7 +9,6 @@ export default async function AddAppointmentAction({ request }) {
   const items = [];
   for (let i = 1; i <= data.noOfItemTypes; i++) {
     if (formData.has(`itemName-${i}`)) {
-      //   let itemName = `itemName-${i}`;
       items.push({
         item: {
           name: formData.get(`itemName-${i}`),
@@ -29,7 +30,7 @@ export default async function AddAppointmentAction({ request }) {
   }
   const appointmentData = {
     suitsQty,
-    userId: data.name,
+    customerId: data.name,
     notes: data.notes,
     deliveryDate: data.deliveryDate,
     totalPrice,
@@ -46,9 +47,8 @@ export default async function AddAppointmentAction({ request }) {
   console.log("Full Form Data:", data);
   console.log("Extracted Items:", items);
   if (response.ok) {
-    return { Success: true, error: null };
+    return { Success: true, error: null};
   } else {
-    return { Success: false, error: response };
+    return { Success: false, error: response};
   }
-
 }

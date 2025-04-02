@@ -5,10 +5,8 @@ import {
   ArrowRightAlt,
 } from "@mui/icons-material";
 import { Box, Grid2, IconButton, Typography } from "@mui/material";
-import { useNavigate } from "react-router";
 
 export default function PreviewCustomer({ previewMode, customerData }) {
-  console.log(customerData);
   return (
     <>
       <Box>

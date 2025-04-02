@@ -29,10 +29,7 @@ import { indigo } from "@mui/material/colors";
 const Conn = import.meta.env.VITE_CONN_URI;
 
 export default function EditCustomer({ editMode, customerData }) {
-  console.log(customerData);
   const [submissionProgress, setSubmissionProgress] = useState(false);
-  //   const [isVerified, setIsVerified] = useState(false);
-  //   const [isVerifying, setIsVerfying] = useState(false);
   const [name, setName] = useState(customerData?.name);
   const [phoneNumber, setPhoneNumber] = useState(customerData?.phoneNumber);
   const [email, setEmail] = useState(customerData?.email);
@@ -236,33 +233,6 @@ export default function EditCustomer({ editMode, customerData }) {
     },
   });
 
-  //   async function verifyCustomerId() {
-  //     setIsVerfying(true);
-  //     const response = await fetch(
-  //       `${Conn}/customers/verifyCustomerId/?customerId=${customerId}`,
-  //       {
-  //         headers: {
-  //           authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
-  //     if (response.ok) {
-  //       setIsVerified(true);
-  //       toast.success("Username accepted!");
-  //     } else {
-  //       if (response.status === 401) {
-  //         localStorage.clear();
-  //         toast.loading("Token expired, logging out", { duration: 1900 });
-  //         logout();
-  //       } else {
-  //         toast("Username already exist!", {
-  //           icon: <Info sx={{ color: indigo[300] }} />,
-  //         });
-  //       }
-  //     }
-  //     setIsVerfying(false);
-  //   }
-
   async function onSubmitHandler(event) {
     event.preventDefault();
     setSubmissionProgress(true);
@@ -371,7 +341,6 @@ export default function EditCustomer({ editMode, customerData }) {
               error={error.nameError.state}
               helperText={error.nameError.message}
               onChange={onChangeHandler}
-              //   disabled={!isVerified}
               size="medium"
             />
             <TextField
@@ -382,7 +351,6 @@ export default function EditCustomer({ editMode, customerData }) {
               onBlur={onBlurHandler}
               error={error.emailError.state}
               helperText={error.emailError.message}
-              //   disabled={!isVerified}
               onChange={onChangeHandler}
               size="medium"
             />
@@ -393,7 +361,6 @@ export default function EditCustomer({ editMode, customerData }) {
               label="Enter address of the customer"
               value={address}
               onBlur={onBlurHandler}
-              //   disabled={!isVerified}
               error={error.addressError.state}
               helperText={error.addressError.message}
               onChange={onChangeHandler}
@@ -406,7 +373,6 @@ export default function EditCustomer({ editMode, customerData }) {
               label="Enter customer's phone number"
               value={phoneNumber}
               onBlur={onBlurHandler}
-              //   disabled={!isVerified}
               error={error.phoneError.state}
               helperText={error.phoneError.message}
               onChange={onChangeHandler}
@@ -418,10 +384,7 @@ export default function EditCustomer({ editMode, customerData }) {
               label="Enter notes such as measurements of the customer"
               type="text"
               value={notes}
-              //   disabled={!isVerified}
               onBlur={onBlurHandler}
-              //   error={error.notesError.state}
-              //   helperText={error.notesError.message}
               onChange={onChangeHandler}
               size="medium"
             />

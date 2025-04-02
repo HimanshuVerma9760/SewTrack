@@ -40,7 +40,6 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { fetchCustomers } from "../../util/API/http";
 import { Delete, Edit, Info, Preview, Search } from "@mui/icons-material";
 import { useDebounce } from "use-debounce";
-// import PreviewCustomer from "./PreviewCustomer";
 import { motion } from "motion/react";
 import EditCustomer from "./EditCustomer";
 import PreviewCustomer from "./PreviewCustomer";
@@ -210,7 +209,7 @@ export default function Customers() {
       />
     );
   }
-  
+
   if (previewMode.state) {
     const customerData = rows.filter(
       (eachRow) => eachRow.id === previewMode.id

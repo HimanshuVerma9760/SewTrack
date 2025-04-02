@@ -54,7 +54,6 @@ export default function Appointments() {
   const [searchTerm] = useDebounce(keyword, 600);
   const [totalCount, setTotalCount] = React.useState(0);
   const [previewMode, setPreviewMode] = useState({ state: false, id: "" });
-  const [editMode, setEditMode] = useState({ state: false, id: "" });
   const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useQuery({
@@ -159,8 +158,10 @@ export default function Appointments() {
   function createData(
     id,
     suitsQty,
+    custId,
     userName,
-    // notes,
+    phoneNumber,
+    address,
     totalPrice,
     deliveryDate,
     isDelivered,
@@ -170,9 +171,11 @@ export default function Appointments() {
     return {
       id,
       suitsQty,
+      custId,
       userName,
+      phoneNumber,
       totalPrice,
-      //   address,
+      address,
       date,
       isDelivered,
       notes,
@@ -183,11 +186,13 @@ export default function Appointments() {
     createData(
       eachAppointment.id,
       eachAppointment.suitsQty,
-      eachAppointment.users.name,
+      eachAppointment.customer.id,
+      eachAppointment.customer.name,
+      eachAppointment.customer.phoneNumber,
+      eachAppointment.customer.address,
       eachAppointment.totalPrice,
       eachAppointment.deliveryDate,
       eachAppointment.isDelivered,
-      //   eachAppointment.createdAt,
       eachAppointment.notes
     )
   );
@@ -225,19 +230,6 @@ export default function Appointments() {
       >
         <PreviewAppointment
           previewMode={setPreviewMode}
-          customerData={customerData[0]}
-        />
-      </motion.div>
-    );
-  } else if (editMode.state) {
-    const customerData = rows.filter((eachRow) => eachRow.id === editMode.id);
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: -100 }}
-        animate={{ opacity: 1, y: 0, transition: { duration: 0.3 } }}
-      >
-        <EditAppointment
-          editMode={setEditMode}
           customerData={customerData[0]}
         />
       </motion.div>
@@ -321,7 +313,7 @@ export default function Appointments() {
                     Id
                   </Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell align="center">
                   <Typography
                     variant="h6"
                     sx={{ fontSize: "1rem" }}
@@ -366,6 +358,15 @@ export default function Appointments() {
                     Total Price
                   </Typography>
                 </TableCell>
+                <TableCell align="center">
+                  <Typography
+                    variant="h6"
+                    sx={{ fontSize: "1rem" }}
+                    color="black"
+                  >
+                    Action
+                  </Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -374,18 +375,28 @@ export default function Appointments() {
                   <TableCell component="th" style={{ width: 80 }} scope="row">
                     {row.id}
                   </TableCell>
-                  <TableCell component="th" style={{ width: 160 }} scope="row">
+                  <TableCell
+                    component="th"
+                    style={{ width: 150 }}
+                    scope="row"
+                    align="center"
+                  >
                     {row.userName}
                   </TableCell>
-                  <TableCell component="th" style={{ width: 160 }} scope="row">
+                  <TableCell
+                    component="th"
+                    style={{ width: 100 }}
+                    scope="row"
+                    align="center"
+                  >
                     {row.suitsQty}
                   </TableCell>
                   <TableCell
-                    style={{ width: 100 }}
+                    style={{ width: 150 }}
                     align="center"
                     sx={{ fontSize: "12.5px" }}
                   >
-                    {row.isDelivered}
+                    {row.isDelivered ? "Delivered" : "Pending"}
                   </TableCell>
                   <TableCell
                     style={{ width: 140 }}
@@ -395,7 +406,7 @@ export default function Appointments() {
                     {row.date}
                   </TableCell>
                   <TableCell
-                    style={{ width: 140 }}
+                    style={{ width: 100 }}
                     align="center"
                     sx={{ fontSize: "12.5px" }}
                   >
@@ -406,11 +417,14 @@ export default function Appointments() {
                     align="center"
                     sx={{ fontSize: "13px" }}
                   >
-                    <IconButton
-                      onClick={() => setEditMode({ state: true, id: row.id })}
+                    <Link
+                      to={`edit-appointments/${row.custId}/${row.id}`}
+                      style={{ textDecoration: "none" }}
                     >
-                      <Edit sx={{ color: indigo[300] }} />
-                    </IconButton>
+                      <IconButton>
+                        <Edit sx={{ color: indigo[300] }} />
+                      </IconButton>
+                    </Link>
                     <IconButton
                       onClick={() =>
                         setPreviewMode({ state: true, id: row.id })

@@ -6,6 +6,7 @@ import {
   FormControl,
   FormHelperText,
   Grid2,
+  IconButton,
   InputLabel,
   LinearProgress,
   MenuItem,
@@ -15,26 +16,33 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { Form, useActionData, useNavigate } from "react-router";
+import { Form, Link, useActionData, useNavigate } from "react-router";
 import toast, { Toaster } from "react-hot-toast";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { debounce } from "lodash";
-import { createAppointment, fetchAllCustomers } from "../../util/API/http";
+import { fetchAllCustomers, queryClient } from "../../util/API/http";
+import { ArrowBack } from "@mui/icons-material";
 const Conn = import.meta.env.VITE_CONN_URI;
 
 export default function AddAppointment() {
-  const [submissionProgress, setSubmissionProgress] = useState(false);
   const [name, setName] = useState("");
   const [noOfItemTypes, setNoOfItemTypes] = useState(0);
-  //   const [items, setItems] = useState({});
   const itemInputs = useRef([]);
   const redirect = debounce(() => navigate("/appointments"), 2000);
-  const actionResponse = useActionData() || null;
+  const actionResponse = useActionData();
   useEffect(() => {
-    if (actionResponse && actionResponse.response) {
+    if (actionResponse && actionResponse.Success) {
+      queryClient.invalidateQueries({
+        queryKey: ["fetch-all-appointments"],
+        exact: false,
+      });
       toast.loading("Successfully created appointment", { duration: 1900 });
       redirect();
-    } else if (actionResponse && actionResponse.error.status === 401) {
+    } else if (
+      actionResponse &&
+      !actionResponse.Success &&
+      actionResponse.error.status === 401
+    ) {
       localStorage.clear();
       toast.loading("Token expired, logging you out!", { duration: 1900 });
       redirect();
@@ -181,39 +189,13 @@ export default function AddAppointment() {
     }
   }
 
-  //   const { mutate } = useMutation({
-  //     mutationFn: createAppointment,
-  //     onSuccess: () => {
-  //       setSubmissionProgress(false);
-  //       toast.loading(
-  //         "Successfully added appointment, redirecting to appointment's page",
-  //         {
-  //           duration: 1900,
-  //         }
-  //       );
-  //       redirect();
-  //     },
-  //   });
-
-  //   async function onSubmitHandler(event) {
-  //   event.preventDefault();
-  // setSubmissionProgress(true);
-  // console.log(event.target);
-  // const formData = {
-  //   name: name,
-  //   email: email,
-  //   password: password,
-  //   specialization_id: specialization,
-  //   city_id: city,
-  //   hospital_id: hospital,
-  //   fees: Number(fees),
-  // };
-
-  // mutate({ formData });
-  //   }
-
   return (
     <>
+      <Link to="/appointments" style={{ textDecoration: "none" }}>
+        <IconButton>
+          <ArrowBack />
+        </IconButton>
+      </Link>
       <Box
         sx={{
           backgroundColor: "white",
@@ -227,19 +209,6 @@ export default function AddAppointment() {
         <Grid2 sx={{ paddingTop: "1rem" }}>
           <Typography variant="h5" sx={{ fontSize: "1.5rem" }} align="center">
             Add Appointment
-          </Typography>
-          <Typography
-            variant="caption"
-            align="center"
-            display="flex"
-            justifyContent="center"
-            color="red"
-          >
-            {submissionProgress && (
-              <Grid2 display="flex" justifyContent="center">
-                <CircularProgress />
-              </Grid2>
-            )}
           </Typography>
         </Grid2>
         <Form method="post">

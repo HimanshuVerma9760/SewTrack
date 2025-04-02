@@ -127,4 +127,27 @@ export async function fetchAllCustomers({ signal }) {
   }
 }
 
-export async function createAppointment({ signal }) {}
+export async function fetchAppointmentItems({ signal, appointmentId }) {
+//   try {
+    const response = await fetch(
+      `${Conn}/appointment-items/get-all/?appointmentId=${appointmentId}`,
+      {
+        signal: signal,
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (response.ok) {
+      const result = await response.json();
+      return result.result;
+    } else {
+      const error = new Error("Something went wrong");
+      error.info = response;
+      throw error;
+    }
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+}

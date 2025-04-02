@@ -25,7 +25,6 @@ import {
   Info,
 } from "@mui/icons-material";
 import { indigo } from "@mui/material/colors";
-// import logout from "../util/logout.js";
 const Conn = import.meta.env.VITE_CONN_URI;
 
 export default function AddCustomer() {
@@ -68,24 +67,6 @@ export default function AddCustomer() {
   const logout = debounce(() => navigate("/"), 2000);
 
   const navigate = useNavigate();
-
-  // const { data: myFetchedHospitals } = useQuery({
-  //   queryKey: ["fetch-all-hospitals"],
-  //   queryFn: fetchHospitals,
-  //   staleTime: 1000 * 60 * 5,
-  // });
-
-  // const { data: myFetchedSpecializations } = useQuery({
-  //   queryKey: ["fetch-all-specializations"],
-  //   queryFn: fetchSpecializations,
-  //   staleTime: 1000 * 60 * 5,
-  // });
-
-  // const { data: myFetchedCities } = useQuery({
-  //   queryKey: ["fetch-all-cities"],
-  //   queryFn: fetchCities,
-  //   staleTime: 1000 * 60 * 5,
-  // });
 
   function onChangeHandler(event) {
     const id = event.target.id || event.target.name;

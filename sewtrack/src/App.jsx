@@ -17,6 +17,8 @@ import AddCustomer from "./Components/Customers/AddCustomer";
 import Appointments from "./Components/Appointments/Appointments";
 import AddAppointment from "./Components/Appointments/AddAppointments";
 import AddAppointmentAction from "./util/actions/AddAppointmentAction";
+import EditAppointmentAction from "./util/actions/EditAppointmentAction";
+import EditAppointment from "./Components/Appointments/EditAppointment";
 
 export default function App() {
   const theme = createTheme({
@@ -61,6 +63,16 @@ export default function App() {
           path: "/appointments/add-appointments",
           action: AddAppointmentAction,
           element: <AddAppointment />,
+        },
+        {
+          path: "/appointments/add-appointments",
+          action: AddAppointmentAction,
+          element: <AddAppointment />,
+        },
+        {
+          path: "/appointments/edit-appointments/:customerId/:appointmentId",
+          action: EditAppointmentAction,
+          element: <EditAppointment />,
         },
       ],
     },
