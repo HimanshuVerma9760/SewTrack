@@ -22,6 +22,9 @@ import {
   MenuItem,
   Menu,
   CircularProgress,
+  useTheme,
+  useMediaQuery,
+  Icon,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import {
@@ -57,14 +60,14 @@ const Conn = import.meta.env.VITE_CONN_URI;
 const drawerWidth = 240;
 
 export default function Navigation() {
-  //   const [isVerified, setIsVerified] = useState(false);
-  // const [isLoading, setIsLoading] = useState(true);
   const [showPrompt, setShowPrompt] = useState(false);
-  //   const [profilePicture, setProfilePicture] = useState(null);
-  //   const { user } = useRouteLoaderData("rootUser");
   const navigation = useNavigation();
   const nav = useLocation();
   const navigate = useNavigate();
+  const theme = useTheme();
+  // const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // <600px
+  const isLargeScreen = useMediaQuery(theme.breakpoints.up("md")); // 600px - 900px
+  // const isLargeScreen = useMediaQuery(theme.breakpoints.up('lg')); // >1200px
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -75,191 +78,181 @@ export default function Navigation() {
   const handleClosePrompt = () => {
     setAnchorEl(null);
   };
-  //   const {
-  //     data: profilePicturePath,
-  //     isPending,
-  //     isError,
-  //     error,
-  //   } = useQuery({
-  //     queryKey: ["get-user", { userId: user.userId }],
-  //     queryFn: () => getUser({ userId: user.userId }),
-  //   });
-
-  //   const isAdmin = useRef(false);
 
   function logoutHandler() {
     localStorage.clear();
     navigate("/");
   }
-  //   function handleClose() {
-  //     // queryClient.invalidateQueries({
-  //     //   queryKey: ["get-user", { userId: user.userId }],
-  //     // });
-  //     // setShowPrompt(false);
-  //   }
-  //   if (showPrompt) {
-  //     return (
-  //       <ModalContent
-  //         type="fileUpload"
-  //         isOpen={showPrompt}
-  //         onClose={handleClose}
-  //         message={{
-  //           message: "Select picture",
-  //           caption: "Select your profile picture",
-  //         }}
-  //       />
-  //     );
-  //   }
-  //   if (!user) {
-  //     return (
-  //       <Skeleton
-  //         variant="rectangular"
-  //         width={300}
-  //         height={500}
-  //         sx={{ borderRadius: "10px" }}
-  //       />
-  //     );
-  //   } else {
-  //     if (user.role === "Admin" || user.role === "Super-Admin")
-  //       isAdmin.current = true;
-  //   }
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
-      >
-        <ImageListItem sx={{ paddingBottom: "1.5rem", paddingTop: "0.2rem" }}>
-          <img
-            style={{ height: "4.5em", width: "4.8rem", margin: "auto" }}
-            loading="lazy"
-            src="/SewTrack.png"
-            alt="hospital"
-          />
-        </ImageListItem>
-        <Typography
-          variant="h6"
-          fontWeight="bold"
-          paddingLeft="20px"
-          marginBottom="14px"
-          marginTop="14px"
-        >
-          Main menu
-        </Typography>
-        <List
+      {isLargeScreen && (
+        <Drawer
+          variant="permanent"
           sx={{
-            paddingLeft: "1rem",
-            marginRight: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.2rem",
+            width: drawerWidth,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: drawerWidth,
+              boxSizing: "border-box",
+            },
           }}
         >
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+          <ImageListItem sx={{ paddingBottom: "1.5rem", paddingTop: "0.2rem" }}>
+            <img
+              style={{ height: "4.5em", width: "4.8rem", margin: "auto" }}
+              loading="lazy"
+              src="/SewTrack.png"
+              alt="hospital"
+            />
+          </ImageListItem>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            paddingLeft="20px"
+            marginBottom="14px"
+            marginTop="14px"
           >
-            <Link
-              to="dashboard"
-              style={{ textDecoration: "none", color: "black" }}
+            Main menu
+          </Typography>
+          <List
+            sx={{
+              paddingLeft: "1rem",
+              marginRight: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.2rem",
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
+              <Link
+                to="dashboard"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <ListItemButton
+                  style={{ display: "flex", gap: "2rem" }}
+                  sx={
+                    nav.pathname.split("/")[1] === "dashboard" && {
+                      backgroundColor: "whitesmoke",
+                    }
+                  }
+                >
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    <Dashboard />
+                  </Typography>
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    Dashboard
+                  </Typography>
+                </ListItemButton>
+              </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+            >
+              <Link
+                to="customers"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <ListItemButton
+                  style={{ display: "flex", gap: "2rem" }}
+                  sx={
+                    nav.pathname.split("/")[1] === "customers" && {
+                      backgroundColor: "whitesmoke",
+                    }
+                  }
+                >
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    <GroupAdd />
+                  </Typography>
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    Customers
+                  </Typography>
+                </ListItemButton>
+              </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+            >
+              <Link
+                to="/appointments"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <ListItemButton
+                  style={{ display: "flex", gap: "2rem" }}
+                  sx={
+                    nav.pathname.split("/")[1] === "appointments" && {
+                      backgroundColor: "whitesmoke",
+                    }
+                  }
+                >
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    <ListAlt />
+                  </Typography>
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    Appointments
+                  </Typography>
+                </ListItemButton>
+              </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
+              <Link
+                to="/chat"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <ListItemButton
+                  style={{ display: "flex", gap: "2rem" }}
+                  sx={
+                    nav.pathname.split("/")[1] === "chat" && {
+                      backgroundColor: "whitesmoke",
+                    }
+                  }
+                >
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    <ListAlt />
+                  </Typography>
+                  <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
+                    Chat
+                  </Typography>
+                </ListItemButton>
+              </Link>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
             >
               <ListItemButton
-                style={{ display: "flex", gap: "2rem" }}
-                sx={
-                  nav.pathname.split("/")[1] === "dashboard" && {
-                    backgroundColor: "whitesmoke",
-                  }
-                }
+                sx={{ display: "flex", gap: "2rem" }}
+                onClick={logoutHandler}
               >
-                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                  <Dashboard />
+                <Typography
+                  sx={{ fontWeight: "bold", fontSize: "14px", color: "red" }}
+                >
+                  <Logout />
                 </Typography>
-                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                  Dashboard
+                <Typography
+                  sx={{ fontWeight: "bold", fontSize: "14px", color: "red" }}
+                > 
+                  Logout
                 </Typography>
               </ListItemButton>
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Link
-              to="customers"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <ListItemButton
-                style={{ display: "flex", gap: "2rem" }}
-                sx={
-                  nav.pathname.split("/")[1] === "customers" && {
-                    backgroundColor: "whitesmoke",
-                  }
-                }
-              >
-                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                  <GroupAdd />
-                </Typography>
-                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                  Customers
-                </Typography>
-              </ListItemButton>
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.7 }}
-          >
-            <Link
-              to="/appointments"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <ListItemButton
-                style={{ display: "flex", gap: "2rem" }}
-                sx={
-                  nav.pathname.split("/")[1] === "appointments" && {
-                    backgroundColor: "whitesmoke",
-                  }
-                }
-              >
-                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                  <ListAlt />
-                </Typography>
-                <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                  Appointments
-                </Typography>
-              </ListItemButton>
-            </Link>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, x: -100 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
-          >
-            <ListItemButton
-              sx={{ display: "flex", gap: "2rem" }}
-              onClick={logoutHandler}
-            >
-              <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                <Logout />
-              </Typography>
-              <Typography sx={{ fontWeight: "bold", fontSize: "14px" }}>
-                Logout
-              </Typography>
-            </ListItemButton>
-          </motion.div>
-        </List>
-      </Drawer>
+            </motion.div>
+          </List>
+        </Drawer>
+      )}
       <Box component="main" sx={{ flexGrow: 1 }}>
         <Grid2
           display="flex"
@@ -280,6 +273,39 @@ export default function Navigation() {
           >
             Sew Track
           </Typography>
+          {!isLargeScreen && (
+            <Grid2 display={"flex"} justifyContent={"center"} gap={"1rem"}>
+              <Tooltip title="Dashboard">
+                <ListItemButton>
+                  <Link to="dashboard" style={{ textDecoration: "none" }}>
+                    <Dashboard sx={{ color: "white" }} />
+                  </Link>
+                </ListItemButton>
+              </Tooltip>
+              <Tooltip title="Customers">
+                <ListItemButton>
+                  <Link to="customers" style={{ textDecoration: "none" }}>
+                    <GroupAdd sx={{ color: "white" }} />
+                  </Link>
+                </ListItemButton>
+              </Tooltip>
+              <Tooltip title="Appointments">
+                <ListItemButton>
+                  <Link to="appointments" style={{ textDecoration: "none" }}>
+                    <ListAlt sx={{ color: "white" }} />
+                  </Link>
+                </ListItemButton>
+              </Tooltip>
+              <Tooltip title="Logout">
+                <ListItemButton onClick={() => logoutHandler()}>
+                  <Grid2>
+                    <Logout sx={{ color: "white" }} />
+                  </Grid2>
+                </ListItemButton>
+              </Tooltip>
+            </Grid2>
+          )}
+
           <Tooltip title="Change profile picture">
             <IconButton onClick={handleClick}>
               <Avatar

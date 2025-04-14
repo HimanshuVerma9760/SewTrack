@@ -157,16 +157,20 @@ export default function Login() {
           backgroundColor: "white",
           paddingBottom: "6rem",
           paddingTop: "5rem",
-          paddingLeft: "6rem",
-          paddingRight: "6rem",
-          maxWidth: "50%",
+          paddingLeft: { sm: "6rem", xs: "2rem" },
+          paddingRight: { sm: "6rem", xs: "2rem" },
+          maxWidth: { sm: "50%", xs: "90%" },
           margin: "auto",
           borderRadius: "1.5rem",
           boxShadow: "0px 1px 2px 0px gray",
         }}
       >
         <CssBaseline />
-        <Typography variant="h2" align="center" sx={{ marginBottom: "0.5rem" }}>
+        <Typography
+          variant="h2"
+          align="center"
+          sx={{ marginBottom: "0.5rem", fontSize: { sm: "4rem", xs: "3rem" } }}
+        >
           Login
         </Typography>
 
